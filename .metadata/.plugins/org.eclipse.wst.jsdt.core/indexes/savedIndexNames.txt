@@ -1,6 +1,0 @@
-INDEX VERSION 1.4+C:\Udemy\spring-micro\wk_ms_platino\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-2825803484.index
-4160494555.index
-3948110568.index
-937184961.index
-3211116968.index
