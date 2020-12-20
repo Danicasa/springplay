@@ -1,4 +1,4 @@
-package com.danicasa.microservicios.app.projects.services.impl;
+package com.danicasa.microservicios.app.projects.service.impl;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.danicasa.microservicios.app.projects.models.entity.Projects;
+import com.danicasa.microservicios.app.projects.model.entity.Project;
 import com.danicasa.microservicios.app.projects.repository.ProjectRepository;
-import com.danicasa.microservicios.app.projects.services.ProjectServices;
+import com.danicasa.microservicios.app.projects.service.ProjectServices;
 
 @Service
 public class ProjectServicesImpl implements ProjectServices {
@@ -18,22 +18,24 @@ public class ProjectServicesImpl implements ProjectServices {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Projects getById(Integer projectId) {
+	public Project getById(Integer projectId) {
 		return repository.findById(projectId).get();
-		//return null;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Projects> getAll() {
-		return (List<Projects>) repository.findAll();
-		//return null;
+	public List<Project> getAll() {
+		return (List<Project>) repository.findAll();
 	}
 
 	@Override
-	public Projects save(Projects project) {
+	public Project save(Project project) {
 		return repository.save(project);
-		//return null;
+	}
+
+	@Override
+	public void delete(Project project) {
+		repository.delete(project);				
 	}
 
 }

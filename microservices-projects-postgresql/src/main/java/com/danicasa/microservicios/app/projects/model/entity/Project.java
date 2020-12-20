@@ -1,4 +1,4 @@
-package com.danicasa.microservicios.app.projects.models.entity;
+package com.danicasa.microservicios.app.projects.model.entity;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ import javax.persistence.Id;
 
 @Entity
 @Table(name = "projects")
-public class Projects implements Serializable {
+public class Project implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -27,14 +27,14 @@ public class Projects implements Serializable {
     @Column(name = "description")
     private String description;
 
-    public Projects() {
+    public Project() {
     }
 
-    public Projects(Integer id) {
+    public Project(Integer id) {
         this.id = id;
     }
 
-    public Projects(Integer id, String name, String description) {
+    public Project(Integer id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -74,10 +74,10 @@ public class Projects implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Projects)) {
+        if (!(object instanceof Project)) {
             return false;
         }
-        Projects other = (Projects) object;
+        Project other = (Project) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
