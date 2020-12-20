@@ -1,5 +1,6 @@
 package com.danicasa.microservices.app.projectControllerTest;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -11,6 +12,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.danicasa.microservicios.app.projects.MicroservicioProjectsApplication;
@@ -53,6 +55,16 @@ public class ProjectControllerTest {
     public void testGetProjectById_fails_when_id_not_exist() {
         Project project = restTemplate.getForObject(getRootUrl() + "/get/1000000", Project.class);
         assertNull(project.getId());
+    }
+    
+    @Test
+    public void testCreateProject() {
+    	Project project = new Project();
+    	project.setName("name for new project");
+    	project.setDescription("description for new project");
+    	ResponseEntity<Project> postResponse =restTemplate.postForEntity(getRootUrl() + "/save", project, Project.class);
+    	assertEquals(postResponse.getStatusCode(), HttpStatus.CREATED);
+    	assertNotNull(postResponse.getBody().getId());
     }
 
 
