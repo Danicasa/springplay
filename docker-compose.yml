@@ -1,0 +1,87 @@
+version: '3.8'
+services:
+  registry-discovery:
+    container_name: id-eureka
+    build: 
+      context: ./microservices-eureka
+    image: microservicios-eureka:0.0.1-SNAPSHOT
+    ports:
+      - 8761:8761
+    environment:
+       - JAVA_OPTS=
+         -Xms256M 
+         -Xmx256M
+  registry-gateway:
+    container_name: id-gateway
+    image: microservicios-gateway:0.0.1-SNAPSHOT
+    environment:
+      - JAVA_OPTS=
+         -Xms256M 
+         -Xmx256M
+         -DEUREKA_SERVER=http://registry-discovery:8761/eureka/
+    depends_on:
+      - registry-discovery
+    ports:
+      - 8090:8090
+  administration:
+    container_name: id-admin
+    image: microservices-projects-admin-server:0.0.1-SNAPSHOT    
+    environment:
+      - JAVA_OPTS=
+         -Xms256M 
+         -Xmx256M
+         -DEUREKA_SERVER=http://registry-discovery:8761/eureka/
+    depends_on:
+      - registry-discovery
+    ports:
+      - 8762:8762
+  project-postgresql:
+    container_name: api-project-postgresql
+    image: microservices-projects-postgresql:0.0.1-SNAPSHOT
+    environment:
+       - JAVA_OPTS=
+         -Xms256M 
+         -Xmx256M
+         -DEUREKA_SERVER=http://registry-discovery:8761/eureka/
+    depends_on:
+      - registry-discovery
+      - registry-gateway 
+  customer:
+    container_name: api-project-mongodb
+    image: microservices-projects-mongodb:0.0.1-SNAPSHOT   
+    environment:
+      - JAVA_OPTS=
+         -Xms256M 
+         -Xmx256M
+         -DEUREKA_SERVER=http://registry-discovery:8761/eureka/
+         -Dspring.profiles.active=dev
+    depends_on:
+      - registry-discovery
+      - registry-gateway      
+  postgres_db:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+        - 3432:5432
+    volumes:
+        - ./dbfiles:/docker-entrypoint-initdb.d
+        - /var/lib/postgres_data:/var/lib/postgresql/data
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: root
+        POSTGRES_DB: dbmicroservicesproject  
+        
+  pgadmin4:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "qwerty"
+    ports:
+      - 80:80
+    depends_on:
+      - postgres_db      
+      
+
+
+    
